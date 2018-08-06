@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Button} from 'antd-mobile';
 // 组件之间用props传递数据
 class App extends  Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class App extends  Component {
       {/* 事件绑定，this引用的问题 */}
       <button onClick={()=>{this.addSubject()}}>添加学科</button>
       这是aPP,{name}
+      <Button type="primary">antd-mobile的按钮</Button>
       <Child className={name}></Child>
       {this.state.subject.map(v => {
         return (<li key={v}>{v}</li>);
