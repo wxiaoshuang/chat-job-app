@@ -11,3 +11,5 @@ webpack+ react+redux+react-router+nodejs+mongodb
     + . BrowserRouter包裹整个应用
     + . Route路由对应渲染的组件，可嵌套
     + . Link跳转对应的路由
+7. 前后端联动调式，配置反向代理
+8. 身份验证机制cookie
