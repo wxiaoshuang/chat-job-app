@@ -1,5 +1,5 @@
 // reducers
-function countReducers(state = 0, action) {
+function counter(state = 0, action) {
     switch(action.type) {
         case 'add':
         return state + 1 ;
@@ -23,4 +23,4 @@ function addCountAsync() {
         },2000);     
     }
 }
-export {countReducers,addCount,removeCount,addCountAsync};
+export {counter,addCount,removeCount,addCountAsync};
