@@ -6,4 +6,8 @@ webpack+ react+redux+react-router+nodejs+mongodb
 2. es6基础知识
 3. *express + mongodb*
 4. react基础知识 + UI库 antd-mobile + babel-plugin-transform按需加载
-5. redux状态管理库
+5. redux状态管理库，需要配合react-redux用在react项目中
+6. react-router4
+    + . BrowserRouter包裹整个应用
+    + . Route路由对应渲染的组件，可嵌套
+    + . Link跳转对应的路由
