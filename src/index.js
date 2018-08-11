@@ -7,17 +7,20 @@ import thunk from 'redux-thunk';
 // import { countReducers } from './store/index'
 import reducers from './store/reducers';
 import App from './App';
-import './config';
+import './config'; //拦截器
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
-import About from './About';
-import Info from './Info';
+import Login from './container/login/login';
+import Register from './container/register/register';
+require('./style/index.css');
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 ReactDOM.render(
     (<Provider store={store}>
         <BrowserRouter>
-            <Route path='/' component={App}>
-             </Route>
+            <div>
+                <Route path='/login' component={Login}></Route>
+                <Route path='/register' component={Register}></Route>
+            </div>
         </BrowserRouter>
     </Provider>),
     document.getElementById('root'));
