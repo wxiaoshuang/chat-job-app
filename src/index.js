@@ -12,12 +12,14 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import Login from './container/login/login';
 import Register from './container/register/register';
+import Auth from './component/auth/auth';
 require('./style/index.css');
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 ReactDOM.render(
     (<Provider store={store}>
         <BrowserRouter>
             <div>
+                <Auth ></Auth>
                 <Route path='/login' component={Login}></Route>
                 <Route path='/register' component={Register}></Route>
             </div>
