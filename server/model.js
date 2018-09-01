@@ -1,10 +1,30 @@
-// const mongoose = require('mongoose');
-// // 链接mongo,并且指定数据库是myapp
-// const DB_URL = 'mongodb://localhost:27017/myapp';
-// mongoose.connect(DB_URL, { useNewUrlParser: true });
-// mongoose.connection.on('connected', function () {
-//     console.log('mongo connect success');
-// });
+const mongoose = require('mongoose')
+// 链接mongo,并且指定数据库是jobChatApp
+const DB_URL = 'mongodb://localhost:27017/jobChatApp'
+mongoose.connect(DB_URL, { useNewUrlParser: true })
+mongoose.connection.on('connected', function () {
+    console.log('mongo connect success')
+})
+const data = {
+    User: {
+        user: {type: String , required: true},
+        pwd: {type: String , required: true},
+        type: {type: String , required: true},
+        desc: {type: String},
+        avatar: {type: String},
+        company:{type: String},
+        money: {type: String}
+    },
+    Chat: {}
+}
+Object.keys(data).forEach(key => {
+    mongoose.model(key, new mongoose.Schema(data[key]))
+})
+module.exports = {
+    getModel(name) {
+        return mongoose.model(name)
+    }
+}
 // // 定义文档类型
 // const UserSchema = new mongoose.Schema({
 //     name: { type: String, required: true },

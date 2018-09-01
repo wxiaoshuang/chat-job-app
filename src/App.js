@@ -5,8 +5,8 @@ import { Link, Route,Redirect } from 'react-router-dom';
 import About from './About';
 import Info from './Info';
 // 组件之间用props传递数据
-import { addCount, removeCount, addCountAsync } from './store/counter';
-import {getUserData} from './store/auth';
+import { addCount, removeCount, addCountAsync } from './redux/counter';
+import {getUserData} from './redux/auth';
 // import axios from 'axios';
 @connect(state => state.auth, { addCount, removeCount, addCountAsync, getUserData })
 class App extends Component {

@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 // import { countReducers } from './store/index'
-import reducers from './store/reducers';
+import reducers from './redux/reducers';
 import App from './App';
 import './config'; //拦截器
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';

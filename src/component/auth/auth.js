@@ -2,7 +2,7 @@ import React from 'react';
 import { readdirSync } from 'fs';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
-// 利用withRouter装饰后，将路由信息注入组件中
+// Auth本身并不是一个路由组件,利用withRouter装饰后，将路由对象注入组件的props中
 @withRouter
 class Auth extends React.Component {
     constructor(props) {
@@ -20,11 +20,11 @@ class Auth extends React.Component {
             return null;
         }
         axios.get('/user/info').then(r => {
+            console.log(r.data);
             // 有登陆信息
             if (r.data.code === 0) {
-
             } else {
-                // 无登陆信息，如果是非登陆页，那么久需要跳转到登陆页
+                // 无登陆信息，如果是非登陆页，那么就需要跳转到登陆页
                 this.props.history.push('/login')
             }
             console.log(r.data);
@@ -35,4 +35,4 @@ class Auth extends React.Component {
         return null;
     }
 }
-export default Auth;
+export default Auth
