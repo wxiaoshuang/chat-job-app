@@ -14,11 +14,12 @@ class Login extends React.Component {
     login() {
         this.props.history.push('/login');
     }
-    // 角色是内部的状态
-    selectRole(type) {
-        this.setState = {
-            type: type
-        };
+    handleChange(key,v) {
+        console.log(v);
+        this.setState({
+            [key]:v
+        })
+        console.log(this.state);
     }
     render() {
         const RadioItem = Radio.RadioItem;
@@ -26,20 +27,19 @@ class Login extends React.Component {
             <Logo></Logo>
             <WingBlank>
                 <List>
-                    <InputItem>用户名</InputItem>
+                    <InputItem onChange={(v) => this.handleChange('user',v)}>用户名</InputItem>
                     <WhiteSpace />
-                    <InputItem>密码</InputItem>
+                    <InputItem onChange={(v) => this.handleChange('pwd',v)}>密码</InputItem>
                     <WhiteSpace />
-                    <InputItem>确认密码</InputItem>
-
-                    <RadioItem checked={this.state.type === 'genius'} onChange={() => this.selectRole('genius')}>牛人</RadioItem>
+                    <InputItem onChange={(v) => this.handleChange('rePsw',v)}>确认密码</InputItem>
+                    <RadioItem checked={this.state.type === 'genius'} onChange={() => this.handleChange('type','genius')}>牛人</RadioItem>
                     <WhiteSpace />
-                    <RadioItem checked={this.state.type === 'boss'} onChange={() => this.selectRole('boss')}>Boss</RadioItem>   
+                    <RadioItem checked={this.state.type === 'boss'} onChange={() => this.handleChange('type','boss')}>Boss</RadioItem>   
                 </List>
                 <WhiteSpace />
-                <Button type="primary" onClick={() => this.login()}>登陆</Button>
-                <WhiteSpace />
                 <Button type="primary" onClick={() => this.register()}>注册</Button>
+                <WhiteSpace />
+                <Button type="primary" onClick={() => this.login()}>登陆</Button>
                 <WhiteSpace />
 
 
