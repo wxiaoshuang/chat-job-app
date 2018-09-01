@@ -7,7 +7,7 @@ mongoose.connection.on('connected', function () {
 })
 const data = {
     User: {
-        user: {type: String , required: true},
+        user: {type: String , required: true}, // 用户名
         pwd: {type: String , required: true},
         type: {type: String , required: true},
         desc: {type: String},

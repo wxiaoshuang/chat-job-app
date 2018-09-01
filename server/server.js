@@ -1,5 +1,6 @@
 // 启动一个简单的http服务器
 const express = require('express');
+// 密码加密
 const app = express();
 const userRouter = require('./user');
 const cookieParser = require('cookie-parser')

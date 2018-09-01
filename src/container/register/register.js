@@ -1,5 +1,6 @@
 import React from 'react'
 import Logo from '../../component/logo/logo'
+import {Redirect} from 'react-router-dom'
 import { WingBlank, WhiteSpace, InputItem, Button, Radio, List, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
 import {register} from "../../redux/user.redux"
@@ -21,7 +22,7 @@ class Login extends React.Component {
             rePwdErrorMsg: '',
         }
     }
-    preRegister() {
+    register() {
         debugger;
         let isAllTrue = !this.state.isUserError && !this.state.isPwdError && !this.state.isRepwdError
         if(isAllTrue) {
@@ -96,6 +97,7 @@ class Login extends React.Component {
     render() {
         const RadioItem = Radio.RadioItem
         return (<div>
+            {this.props.redirectTo?<Redirect to={this.props.redirectTo}></Redirect>:null}
             <Logo></Logo>
             <WingBlank>
                 <List>
@@ -129,7 +131,7 @@ class Login extends React.Component {
                     <RadioItem checked={this.state.type === 'boss'} onChange={() => this.handleChange('type','boss')}>Boss</RadioItem>   
                 </List>
                 <WhiteSpace />
-                <Button type="primary" onClick={() => this.preRegister()}>注册</Button>
+                <Button type="primary" onClick={() => this.register()}>注册</Button>
                 <WhiteSpace />
                 <Button type="primary" onClick={() => this.login()}>登陆</Button>
                 <WhiteSpace />
