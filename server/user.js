@@ -31,6 +31,19 @@ router.post('/register', function(req, res){
 
     })
 })
+// 登陆
+router.post('/login', function(req, res){
+    console.log(req.body);
+    let {user, pwd} = req.body
+    User.findOne({user}, function (err, doc){
+        if(!doc) {
+            return res.json({code:1, msg: '用户名不存在'})
+        }
+        res.cookie('userid', doc._id)
+        return res.json({code:0, msg: '登陆成功'})
+
+    })
+})
 router.get('/info', function(req, res){
     return res.json({code:1});
 })
