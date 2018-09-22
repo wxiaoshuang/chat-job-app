@@ -3,7 +3,9 @@ const express = require('express')
 const utils = require('utility')
 const router = express.Router()
 const models = require('./model')
-const User = models.getModel('User')
+const User =  models.getModel('User');
+// An instance of a model is called a document
+// const User = new UserModels();
 // 在 MongoDB 中，映射（Projection）指的是只选择文档中的必要数据，而非全部数据。如果文档有 5 个字段，而你只需要显示 3 个，则只需选择 3 个字段即可
 // 不管是利用 AND 或 OR 条件来获取想要的字段列表都是显示一个文档的所有字段。要想限制，可以利用 0 或 1 来设置字段列表。1 用于显示字段，0 用于隐藏字段。
 const _filter = {pwd: 0, __v: 0}
@@ -51,7 +53,7 @@ router.post('/login', function(req, res){
 })
 // 获取用户信息
 router.get('/info', function(req, res){
-    const {userid} = req.cookies;
+    const {userid} = req.cookies
     if(!userid) {
         return res.json({code: 1 , msg: '尚未登录'})
     }
@@ -60,6 +62,23 @@ router.get('/info', function(req, res){
             return res.json({code:1, msg: '后端出错'})
         }
         return res.json({code: 0, msg: '成功', data: doc})
+    })
+})
+// 更新用户信息
+router.post('/update', function(req, res){
+    const {userid} = req.cookies
+    const body = req.body
+    if(!userid) {
+        return res.json({code: 1 , msg: '请先登录'})
+    }
+    // 更新方法默认不会返回更新后的数据，还是返回原数据，需要将options的new设置为true
+    User.findByIdAndUpdate({_id: userid}, body, {new: false}, function(err, doc) {
+        if(err) {
+            return res.json({code:1, msg: '更新失败'})
+        }
+        console.log('update-doc', doc);
+        let data = Object.assign({}, {type: doc.type, user: doc.user}, body)
+        return res.json({code: 0, msg: '更新成功', data})
     })
 })
 router.post('/register')

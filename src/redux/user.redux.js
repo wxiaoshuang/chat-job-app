@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {getRedirectPath} from "../utils/util"
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+// 登陆,注册以及更新用户信息都可以统一用AUTH_SUCCESS
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const ERROR_MSG = 'ERROR_MSG'
 const LOAD_DATA = 'LOAD_DATA'
 const initState = {
@@ -13,9 +13,7 @@ const initState = {
 // reducer
 export function user(state = initState, action) {
     switch(action.type) {
-        case REGISTER_SUCCESS:
-            return {...state, isAuth: true, redirectTo: getRedirectPath(action.payload) ,...action.payload}
-        case LOGIN_SUCCESS:
+        case AUTH_SUCCESS:
             return {...state, isAuth: true, redirectTo: getRedirectPath(action.payload) ,...action.payload}
         case LOAD_DATA:
             return {...state,...action.payload}
@@ -33,7 +31,7 @@ export function login({user, pwd}) {
     return dispatch => {
         axios.post('/user/login', {user,pwd}).then(r => {
             if(r.data.code === 0) {
-                dispatch(loginSuccess(r.data.data))
+                dispatch(authSuccess(r.data.data))
             } else {
                 dispatch(errorMsg(r.data.msg))
             }
@@ -51,19 +49,30 @@ export function register({user, pwd, rePwd, type}) {
     return dispatch => {
         axios.post('/user/register', {user,pwd,type}).then(r => {
             if(r.data.code === 0) {
-                dispatch(registerSuccess(r.data.data))
+                dispatch(authSuccess(r.data.data))
             } else {
                 dispatch(errorMsg(r.data.msg))
             }
         })
     }
 }
-// action
-function registerSuccess(data) {
-    return {type: REGISTER_SUCCESS, payload: data}
+// params {icon, company, title, money, desc}
+export function updateUserInfo(data) {
+    return dispatch => {
+        axios.post('/user/update', data).then(r => {
+            if(r.data.code === 0) {
+                dispatch(authSuccess(r.data.data))
+            } else {
+                dispatch(errorMsg(r.data.msg))
+            }
+        })
+    }
+
 }
-function loginSuccess(data) {
-    return {type: REGISTER_SUCCESS, payload: data}
+// sync action
+function authSuccess(obj) {
+    let {pwd, ...data} = obj;
+    return {type: AUTH_SUCCESS, payload: obj}
 }
 export function errorMsg(msg) {
     return {type: ERROR_MSG, payload: msg}

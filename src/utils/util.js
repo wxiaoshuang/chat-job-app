@@ -1,7 +1,7 @@
 
-function getRedirectPath({type, avatar}) {
+function getRedirectPath({type, icon}) {
     let url = type === 'boss'? '/boss': '/genius'
-    if(!avatar) {
+    if(!icon) {
         url += 'info'
     }
     return url;
