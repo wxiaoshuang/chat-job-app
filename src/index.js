@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import reducers from './redux/reducers';
 import BossInfo from './container/bossInfo/bossInfo';
 import './config'; //拦截器
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import Login from './container/login/login';
 import Register from './container/register/register';
@@ -21,9 +21,11 @@ ReactDOM.render(
         <BrowserRouter>
             <div>
                 <Auth></Auth>
-                <Route path='/login' component={Login}></Route>
-                <Route path='/register' component={Register}></Route>
-                <Route path='/bossinfo' component={BossInfo}></Route>
+                <Switch>
+                    <Route path='/login' component={Login}></Route>
+                    <Route path='/register' component={Register}></Route>
+                    <Route path='/bossinfo' component={BossInfo}></Route>
+                </Switch>
             </div>
         </BrowserRouter>
     </Provider>),
