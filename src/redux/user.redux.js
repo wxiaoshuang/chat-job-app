@@ -3,12 +3,11 @@ import {getRedirectPath} from "../utils/util"
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const ERROR_MSG = 'ERROR_MSG'
+const LOAD_DATA = 'LOAD_DATA'
 const initState = {
     isAuth: false,
     redirectTo: '',
     user:'',
-    pwd:'',
-    rePwd: '',
     type: ''
 }
 // reducer
@@ -18,6 +17,8 @@ export function user(state = initState, action) {
             return {...state, isAuth: true, redirectTo: getRedirectPath(action.payload) ,...action.payload}
         case LOGIN_SUCCESS:
             return {...state, isAuth: true, redirectTo: getRedirectPath(action.payload) ,...action.payload}
+        case LOAD_DATA:
+            return {...state,...action.payload}
         case ERROR_MSG:
             return {...state, isAuth: false, msg: action.payload.msg}
         default:
@@ -32,7 +33,7 @@ export function login({user, pwd}) {
     return dispatch => {
         axios.post('/user/login', {user,pwd}).then(r => {
             if(r.data.code === 0) {
-                dispatch(loginSuccess(r.data))
+                dispatch(loginSuccess(r.data.data))
             } else {
                 dispatch(errorMsg(r.data.msg))
             }
@@ -50,7 +51,7 @@ export function register({user, pwd, rePwd, type}) {
     return dispatch => {
         axios.post('/user/register', {user,pwd,type}).then(r => {
             if(r.data.code === 0) {
-                dispatch(registerSuccess(r.data))
+                dispatch(registerSuccess(r.data.data))
             } else {
                 dispatch(errorMsg(r.data.msg))
             }
@@ -64,6 +65,9 @@ function registerSuccess(data) {
 function loginSuccess(data) {
     return {type: REGISTER_SUCCESS, payload: data}
 }
-function errorMsg(msg) {
+export function errorMsg(msg) {
     return {type: ERROR_MSG, payload: msg}
+}
+export function loadUserData(data) {
+    return {type: LOAD_DATA, payload: data}
 }

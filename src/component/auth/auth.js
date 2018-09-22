@@ -1,9 +1,13 @@
 import React from 'react';
-import { readdirSync } from 'fs';
-import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+import {loadUserData, errorMsg} from "../../redux/user.redux"
+import {connect} from 'react-redux'
 // Auth本身并不是一个路由组件,利用withRouter装饰后，将路由对象注入组件的props中
 @withRouter
+@connect (
+    null, {loadUserData, errorMsg}
+)
 class Auth extends React.Component {
     constructor(props) {
         super(props);
@@ -19,20 +23,23 @@ class Auth extends React.Component {
         if (list.indexOf(presentUrl) > -1) {
             return null;
         }
-        axios.get('/user/info').then(r => {
-            console.log(r.data);
-            // 有登陆信息
-            if (r.data.code === 0) {
-            } else {
-                // 无登陆信息，如果是非登陆页，那么就需要跳转到登陆页
-                this.props.history.push('/login')
-            }
-            console.log(r.data);
-            console.log(this.props);
-        })
+        this.getUserInfo();
     }
     render() {
         return null;
+    }
+    // dispatch action更新state
+    getUserInfo() {
+        axios.get('/user/info').then(r => {
+            if (r.data.code === 0) {
+                console.log('auth', r.data)
+                // 在redux存储用户的信息
+                this.props.loadUserData(r.data.data)
+            } else {
+                // 无用户信息，如果是非登陆页，那么就需要跳转到登陆页
+                this.props.history.push('/login')
+            }
+        })
     }
 }
 export default Auth

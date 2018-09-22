@@ -4,6 +4,9 @@ const utils = require('utility')
 const router = express.Router()
 const models = require('./model')
 const User = models.getModel('User')
+// 在 MongoDB 中，映射（Projection）指的是只选择文档中的必要数据，而非全部数据。如果文档有 5 个字段，而你只需要显示 3 个，则只需选择 3 个字段即可
+// 不管是利用 AND 或 OR 条件来获取想要的字段列表都是显示一个文档的所有字段。要想限制，可以利用 0 或 1 来设置字段列表。1 用于显示字段，0 用于隐藏字段。
+const _filter = {pwd: 0, __v: 0}
 function encrypt(pwd) {
     const salt  = 'dheufgu#@47547fdjfbr.~binj7v'
     return utils.md5(utils.md5(pwd+salt))
@@ -18,7 +21,7 @@ router.get('/list',function(req,res) {
 router.post('/register', function(req, res){
     console.log(req.body);
     let {user, pwd, type} = req.body
-    User.findOne({user}, function (err, doc){
+    User.findOne({user}, _filter, function (err, doc){
         if(doc) {
             return res.json({code:1, msg: '用户名重复'})
         }
@@ -26,26 +29,38 @@ router.post('/register', function(req, res){
             if(err) {
                return  res.json({code: 1, msg: '注册失败'})
             }
-            return  res.json({code: 0, msg: '注册成功'})
+            res.cookie('userid', doc._id)
+            const {user, type, _id} = doc;
+            return  res.json({code: 0, msg:'注册成功',data: {user, type, _id}})
         })
-
     })
 })
 // 登陆
 router.post('/login', function(req, res){
     console.log(req.body);
     let {user, pwd} = req.body
-    User.findOne({user}, function (err, doc){
+    User.findOne({user}, _filter, function (err, doc){
         if(!doc) {
             return res.json({code:1, msg: '用户名不存在'})
         }
         res.cookie('userid', doc._id)
-        return res.json({code:0, msg: '登陆成功'})
+        const {user, type, _id} = doc;
+        return res.json({code:0, msg:'登录成功', data: {user, type, _id}})
 
     })
 })
+// 获取用户信息
 router.get('/info', function(req, res){
-    return res.json({code:1});
+    const {userid} = req.cookies;
+    if(!userid) {
+        return res.json({code: 1 , msg: '尚未登录'})
+    }
+    User.findOne({_id: userid}, _filter,function(err, doc) {
+        if(err) {
+            return res.json({code:1, msg: '后端出错'})
+        }
+        return res.json({code: 0, msg: '成功', data: doc})
+    })
 })
 router.post('/register')
 module.exports = router
